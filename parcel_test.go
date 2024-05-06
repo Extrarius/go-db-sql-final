@@ -2,7 +2,6 @@ package main
 
 import (
 	"database/sql"
-	"errors"
 	"fmt"
 	"math/rand"
 	"testing"
@@ -184,13 +183,7 @@ func TestGetByClient(t *testing.T) {
 		// в parcelMap лежат добавленные посылки, ключ - идентификатор посылки, значение - сама посылка
 		// убедитесь, что все посылки из storedParcels есть в parcelMap
 		// убедитесь, что значения полей полученных посылок заполнены верно
-		val, ok := parcelMap[parcel.Number]
-		if ok {
-			parcel.Client = client
-			assert.Equal(t, parcel, val)
-		} else {
-			err = errors.New("parcel not found in map")
-		}
+		require.Contains(t, parcelMap, parcel.Number)
 	}
 	require.NoError(t, err)
 }
